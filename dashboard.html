@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teia - Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="img/logoPR.png" type="image/x-icon">
+</head>
+
+<body>
+  <!-------------------------------------HEADER------------------------------------------->
+  <header>
+    <div class="logo">
+      <img src="img/logoPR.png" alt="Logo" class="logo">
+      <a href="index.html" class="brand-name">TEIA</a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+        <li><a href="contato.html">Contato</a></li>
+        <li><a href="#" id="logoutBtn" class="logout-btn">Sair</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-------------------------------------MAIN------------------------------------------->
+  <main class="dashboard-main">
+    <div class="dashboard-container">
+      <!-- Seção de boas-vindas -->
+      <section class="welcome-section">
+        <h1>Bem-vindo, <span id="userName">Carregando...</span>!</h1>
+        <p class="welcome-text">Este é seu painel de controle pessoal na Teia.</p>
+      </section>
+
+      <!-- Cards do dashboard -->
+      <div class="dashboard-grid">
+        <!-- Card de Informações Pessoais -->
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h2>Suas Informações</h2>
+          </div>
+          <div class="card-content">
+            <div class="info-row">
+              <span class="info-label">Nome:</span>
+              <span class="info-value" id="userFullName">Carregando...</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Email:</span>
+              <span class="info-value" id="userEmail">Carregando...</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">CPF:</span>
+              <span class="info-value" id="userCpf">Carregando...</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">ID:</span>
+              <span class="info-value" id="userId">Carregando...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-------------------------------------FOOTER------------------------------------------->
+  <footer>
+    <p>© 2025 Teia - Inovando por um futuro brilhante!</p>
+  </footer>
+
+  <script>
+    // Verificar se o usuário está logado
+    function checkAuthentication() {
+      const userData = localStorage.getItem('teiaUser');
+      if (!userData) {
+        // Se não estiver logado, redirecionar para login
+        window.location.href = 'login.html';
+        return null;
+      }
+      return JSON.parse(userData);
+    }
+
+    // Carregar dados do usuário
+    function loadUserData() {
+      const user = checkAuthentication();
+      if (!user) return;
+
+      // Preencher informações básicas
+      document.getElementById('userName').textContent = user.nome.split(' ')[0]; // Primeiro nome
+      document.getElementById('userFullName').textContent = user.nome;
+      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('userCpf').textContent = formatCpf(user.cpf);
+      document.getElementById('userId').textContent = user.candidato_id;
+    }
+
+    // Formatar CPF
+    function formatCpf(cpf) {
+      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    }
+
+    // Função de logout
+    function logout() {
+      // Limpar dados de sessão
+      localStorage.removeItem('teiaUser');
+      // Redirecionar para página inicial
+      window.location.href = 'index.html';
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserData();
+      
+      // Logout button
+      document.getElementById('logoutBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (confirm('Tem certeza que deseja sair?')) {
+          logout();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
