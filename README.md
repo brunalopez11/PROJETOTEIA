@@ -1,3 +1,4 @@
+
 # Teia Plataforma de Conexão entre Estudantes de Tecnologia e Oportunidades Profissionais.
  
 # Desenvolvido por: 
@@ -34,5 +35,3 @@ O projeto visa contribuir para os seguintes ODS:
 - **ODS 8**: Trabalho Decente e Crescimento Econômico.
 - **ODS 9**: Industria, Inovação e Infraestrutura.
 - **ODS 10**: Redução das Desigualdades.
-
->>>>>>> 79ed84bc737b44797ee9ee1b1d195a3142795991

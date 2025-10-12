@@ -16,6 +16,9 @@ public class CorsConfig {
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(
+                                "http://localhost:5173",    // Vite dev server (padrão)
+                                "http://localhost:5174",    // Vite dev server (alternativa)
+                                "http://127.0.0.1:5173",    // Vite dev server (127.0.0.1)
                                 "http://localhost:3000",    // React/Next.js dev server
                                 "http://localhost:5000",    // Live Server
                                 "http://localhost:8000",    // Python HTTP server
@@ -23,9 +26,10 @@ public class CorsConfig {
                                 "http://localhost:5500",    // VS Code Live Server
                                 "file://"                   // Local file protocol
                         )
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                         .allowedHeaders("*")
-                        .allowCredentials(true);
+                        .allowCredentials(true)
+                        .maxAge(3600);  // Cache preflight por 1 hora
             }
         };
     }

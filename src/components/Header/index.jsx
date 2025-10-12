@@ -1,23 +1,47 @@
 import './style.modules.css'
 import logo from '../../assets/logoPR.png'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
 
 export const Header = () => {
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  const handleLogout = () => {
+    if (window.confirm('Tem certeza que deseja sair?')) {
+      logout();
+      navigate('/login');
+    }
+  };
+
+  const isActive = (path) => {
+    return location.pathname === path ? 'active' : '';
+  };
 
   return (
    <header>
     <div className="logo">
       <img src={logo} alt="Logo" className="logo"/>
-      <a href="index.html" className="brand-name">TEIA</a>
+      <Link to="/" className="brand-name">TEIA</Link>
     </div>
     <nav>
       <ul>
         {/*Link to= não baixa HTML de novo, só atualiza o que mudou*/}
-        <li><Link to={"/"}>Início</Link></li>
-        <li><Link to={"/login"} className="active">Login</Link></li>
-        <li><Link to={"/sobre"}>Sobre</Link></li>
-        <li><Link to={"/contato"}>Contato</Link></li>
+        <li><Link to="/" className={isActive('/')}>Início</Link></li>
+        {isAuthenticated() ? (
+          <>
+            <li><Link to="/sobre" className={isActive('/sobre')}>Sobre</Link></li>
+            <li><Link to="/contato" className={isActive('/contato')}>Contato</Link></li>
+            <li><a href="#" onClick={handleLogout} className="logout-btn">Sair</a></li>
+          </>
+        ) : (
+          <>
+            <li><Link to="/login" className={isActive('/login')}>Login</Link></li>
+            <li><Link to="/sobre" className={isActive('/sobre')}>Sobre</Link></li>
+            <li><Link to="/contato" className={isActive('/contato')}>Contato</Link></li>
+          </>
+        )}
       </ul>
     </nav>
   </header>
