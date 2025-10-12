@@ -5,8 +5,22 @@
 - **Node.js** 16+ e npm
 - **Java** 17+
 - **Maven** (ou use o wrapper incluído)
+- **MongoDB Community Server** instalado e rodando
+- **MongoDB Compass** (opcional, para interface gráfica)
 
 ## 🏃 Como rodar o projeto completo
+
+### 0️⃣ Iniciar o MongoDB
+
+```bash
+# Windows - Iniciar serviço MongoDB
+net start MongoDB
+
+# Verificar se está rodando
+mongosh --eval "db.version()"
+```
+
+✅ MongoDB estará rodando em: **mongodb://localhost:27017**
 
 ### 1️⃣ Iniciar o Backend (Spring Boot)
 
@@ -44,14 +58,29 @@ npm run dev
 |---------|-----|-----------|
 | Frontend | http://localhost:5173 | Aplicação React |
 | Backend API | http://localhost:8080 | API REST |
-| H2 Console | http://localhost:8080/h2-console | Banco de dados |
+| MongoDB | mongodb://localhost:27017 | Banco de dados |
+| MongoDB Compass | (Desktop App) | Interface gráfica MongoDB |
 | Endpoint Candidatos | http://localhost:8080/candidato | Lista candidatos |
 
-### 🗄️ Configuração do H2 Console
+### 🗄️ MongoDB via Compass
 
-- **JDBC URL**: `jdbc:h2:mem:testdb`
-- **User Name**: `sa`
-- **Password**: *(vazio)*
+1. Abra o **MongoDB Compass**
+2. Conecte em: `mongodb://localhost:27017`
+3. Acesse o banco: `teia_db`
+4. Collection: `candidatos`
+
+### 🗄️ MongoDB via Terminal
+
+```bash
+# Abrir shell
+mongosh
+
+# Selecionar banco
+use teia_db
+
+# Ver candidatos
+db.candidatos.find().pretty()
+```
 
 ## 🔧 Scripts disponíveis
 
@@ -92,6 +121,16 @@ netstat -ano | findstr :5173
 taskkill /PID [numero] /F
 ```
 
+### MongoDB não conecta
+Verifique se o serviço está rodando:
+```bash
+# Windows
+net start MongoDB
+
+# Verificar status
+mongosh --eval "db.version()"
+```
+
 ### CORS bloqueado
 Certifique-se de que:
 1. O backend está rodando
@@ -99,7 +138,9 @@ Certifique-se de que:
 3. Reinicie ambos os servidores após mudanças
 
 ### Erro de conexão no frontend
-Verifique se o backend está rodando em `http://localhost:8080`
+Verifique se:
+1. O backend está rodando em `http://localhost:8080`
+2. O MongoDB está rodando
 
 ## 📁 Estrutura do projeto
 
