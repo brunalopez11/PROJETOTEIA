@@ -1,13 +1,13 @@
 package com.teia.sitebackend.repository;
 
 import com.teia.sitebackend.model.Candidato;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface CandidatoRepository extends JpaRepository<Candidato, Integer> {
+public interface CandidatoRepository extends MongoRepository<Candidato, String> {
     
     // Buscar candidato por email
     Optional<Candidato> findByEmail(String email);

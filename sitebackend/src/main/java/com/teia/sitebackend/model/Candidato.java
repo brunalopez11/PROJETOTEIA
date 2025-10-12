@@ -1,22 +1,28 @@
 package com.teia.sitebackend.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.index.Indexed;
 
-@Entity
-@Table(name = "candidato")
+@Document(collection = "candidatos")
 public class Candidato {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer candidato_id;
+    private String candidato_id;
+    
     private String nome;
+    
+    @Indexed(unique = true)
     private String cpf;
+    
+    @Indexed(unique = true)
     private String email;
+    
     private String senha;
 
     public Candidato() {
     }
 
-    public Candidato(Integer candidato_id, String cpf, String email, String nome, String senha) {
+    public Candidato(String candidato_id, String cpf, String email, String nome, String senha) {
         this.candidato_id = candidato_id;
         this.cpf = cpf;
         this.email = email;
@@ -24,11 +30,11 @@ public class Candidato {
         this.senha = senha;
     }
 
-    public Integer getCandidato_id() {
+    public String getCandidato_id() {
         return candidato_id;
     }
 
-    public void setCandidato_id(Integer candidato_id) {
+    public void setCandidato_id(String candidato_id) {
         this.candidato_id = candidato_id;
     }
 
