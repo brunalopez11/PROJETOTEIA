@@ -83,8 +83,18 @@ O frontend deve fazer requisições para:
 - **Login**: `http://localhost:8080/candidato/login`
 
 **CORS** está configurado para aceitar requisições de:
-- `localhost:3000`, `localhost:5000`, `localhost:5500`, `localhost:8000`
+- `localhost:5173` (Vite - padrão) ⚡
+- `localhost:5174` (Vite - alternativa)
+- `localhost:3000` (React/Next.js)
+- `localhost:5000`, `localhost:5500`, `localhost:8000`
 - Protocolo `file://` (arquivos locais)
+
+### Rodando com Vite (React)
+O frontend React usa Vite e roda por padrão em `http://localhost:5173`:
+```bash
+# Na raiz do projeto
+npm run dev
+```
 
 ## 📁 Estrutura do Projeto
 
