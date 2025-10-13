@@ -26,23 +26,43 @@ O servidor iniciará na **porta 8080**: `http://localhost:8080`
 Acesse: `http://localhost:8080/candidato`
 - Deve retornar uma lista vazia `[]` (inicialmente)
 
-## 🗄️ Banco de Dados H2
+## 🗄️ Banco de Dados MongoDB
 
-### Acessar o Console H2
-1. Com o servidor rodando, acesse: `http://localhost:8080/h2-console`
-2. Configure a conexão:
-   - **JDBC URL**: `jdbc:h2:mem:testdb`
-   - **User Name**: `sa`
-   - **Password**: *(deixe vazio)*
-3. Clique em **Connect**
+### Pré-requisitos
+- **MongoDB Community Server** instalado e rodando
+- **MongoDB Compass** (opcional, para interface gráfica)
 
-### Visualizar dados
-```sql
--- Ver todos os candidatos
-SELECT * FROM candidato;
+### Iniciar MongoDB
+```bash
+# Windows - MongoDB como serviço
+net start MongoDB
 
--- Ver estrutura da tabela
-SHOW COLUMNS FROM candidato;
+# Ou inicie manualmente
+mongod
+```
+
+### Acessar via MongoDB Compass
+1. Abra o MongoDB Compass
+2. Conecte em: `mongodb://localhost:27017`
+3. Banco de dados: `teia_db`
+4. Collection: `candidatos`
+
+### Visualizar dados via terminal
+```bash
+# Abrir shell do MongoDB
+mongosh
+
+# Usar o banco de dados
+use teia_db
+
+# Ver todos os candidatos
+db.candidatos.find().pretty()
+
+# Contar candidatos
+db.candidatos.countDocuments()
+
+# Buscar por email
+db.candidatos.find({ email: "exemplo@email.com" })
 ```
 
 ## 📡 Endpoints da API
@@ -83,8 +103,18 @@ O frontend deve fazer requisições para:
 - **Login**: `http://localhost:8080/candidato/login`
 
 **CORS** está configurado para aceitar requisições de:
-- `localhost:3000`, `localhost:5000`, `localhost:5500`, `localhost:8000`
+- `localhost:5173` (Vite - padrão) ⚡
+- `localhost:5174` (Vite - alternativa)
+- `localhost:3000` (React/Next.js)
+- `localhost:5000`, `localhost:5500`, `localhost:8000`
 - Protocolo `file://` (arquivos locais)
+
+### Rodando com Vite (React)
+O frontend React usa Vite e roda por padrão em `http://localhost:5173`:
+```bash
+# Na raiz do projeto
+npm run dev
+```
 
 ## 📁 Estrutura do Projeto
 
@@ -112,12 +142,13 @@ src/main/java/com/teia/sitebackend/
 # Porta do servidor
 server.port=8080
 
-# H2 Database
-spring.h2.console.enabled=true
-spring.datasource.url=jdbc:h2:mem:testdb
+# MongoDB
+spring.data.mongodb.host=localhost
+spring.data.mongodb.port=27017
+spring.data.mongodb.database=teia_db
 
-# Thymeleaf
-spring.thymeleaf.cache=false
+# Logging
+logging.level.org.springframework.data.mongodb=DEBUG
 ```
 
 ## 🐛 Solução de Problemas
@@ -143,10 +174,12 @@ Verificar se o frontend está rodando em uma das portas configuradas no `CorsCon
 
 ## 📝 Notas Importantes
 
-- **Banco H2**: Os dados são perdidos ao reiniciar o servidor (banco em memória)
+- **MongoDB**: Dados persistem entre reinicializações do servidor
+- **Índices**: Email e CPF têm índices únicos para prevenir duplicatas
 - **Senhas**: Atualmente armazenadas em texto plano (implementar hash em produção)
 - **Validações**: Email e CPF únicos são validados automaticamente
 - **Logs**: Acompanhe o console para debug durante desenvolvimento
+- **ID**: MongoDB gera IDs automaticamente (ObjectId como String)
 
 ## 🤝 Para desenvolvedores
 

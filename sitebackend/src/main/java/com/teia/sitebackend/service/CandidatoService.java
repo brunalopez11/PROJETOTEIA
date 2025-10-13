@@ -22,7 +22,7 @@ public class CandidatoService {
     
     //OBTER POR ID
     public Optional<Candidato> getById(Integer id){
-        return candidatoRepository.findById(id);
+        return candidatoRepository.findById(String.valueOf(id));
     }
     
     //CADASTRAR
@@ -32,7 +32,7 @@ public class CandidatoService {
     
     //DELETAR
     public void delete(Integer id){
-        candidatoRepository.deleteById(id);
+        candidatoRepository.deleteById(String.valueOf(id));
     }
     
     //BUSCAR POR EMAIL

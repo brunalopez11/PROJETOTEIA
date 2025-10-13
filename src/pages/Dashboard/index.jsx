@@ -1,12 +1,12 @@
 import React from 'react'
 import { Header } from '../../components/Header'
-import { Dashboard } from '../../components/Dashboard'
+import { DashboardUsuario } from '../../components/DashboardUsuario'
 
 export const DashboardPage = () => {
   return (
      <>
             <Header/>
-            <Dashboard/>
+            <DashboardUsuario/>
     </>
   )
 }
