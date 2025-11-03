@@ -884,3 +884,112 @@ nav ul li a.active {
         padding: 0 10px;
     }
 }
+
+
+/* ==================== ÁREA DO ALUNO ==================== */
+
+.aluno-container {
+  max-width: 1100px;
+  margin: 50px auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+
+/* Card do aluno */
+.card-aluno {
+  background: rgba(20, 20, 20, 0.8);
+  border-radius: 20px;
+  padding: 30px;
+  width: 350px;
+  text-align: center;
+  border: 2px solid rgba(0, 0, 255, 0.226);
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.foto-aluno img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.card-aluno h2 {
+  margin-bottom: 5px;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.nivel {
+  color: #b1b1ff;
+  font-weight: bold;
+}
+
+/* Barra de progresso */
+.progresso-container {
+  margin-top: 20px;
+}
+
+.barra {
+  width: 100%;
+  height: 12px;
+  background: #333;
+  border-radius: 10px;
+  margin: 8px 0;
+}
+
+.barra-preenchida {
+  height: 100%;
+  background: rgb(2, 46, 166);
+  border-radius: 10px;
+}
+
+/* Upload de currículo */
+.upload-cv {
+  margin-top: 25px;
+}
+
+.cv-label {
+  display: inline-block;
+  padding: 10px 20px;
+  background: rgb(2,46,166);
+  border-radius: 10px;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.cv-info {
+  margin-top: 5px;
+  color: #ccc;
+  font-size: 0.85rem;
+}
+
+/* CURSOS */
+.cursos-section {
+  width: 100%;
+  text-align: center;
+}
+
+.cursos-grid {
+  margin-top: 20px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+.curso-card {
+  background: #202020;
+  padding: 20px;
+  border-radius: 15px;
+  border: 2px solid rgba(0, 0, 255, 0.226);
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.curso-card:hover {
+  transform: translateY(-5px);
+  background: #2b2b2b;
+}

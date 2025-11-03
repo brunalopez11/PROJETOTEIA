@@ -32,7 +32,7 @@ export const ContainerForm = () => {
         
         // Redirecionar para dashboard após 1 segundo
         setTimeout(() => {
-          navigate('/');
+          navigate('/area-aluno');
         }, 1000);
       } else {
         // Tratar erro retornado pelo backend

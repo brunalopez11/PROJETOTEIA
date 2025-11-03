@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Área do Aluno - TEIA</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+      <div class="logo">
+        <img src="img/logoPR.png" alt="Logo" class="logo">
+        <a href="index.html" class="brand-name">TEIA</a>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="#">Cursos</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+          <li><a href="contato.html">Contato</a></li>
+        </ul>
+      </nav>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="aluno-container">
+
+    <!-- CARD DO ALUNO -->
+    <section class="card-aluno">
+      <div class="foto-aluno">
+        <img src="./img/bruna.png.jpeg" alt="Foto do aluno">
+      </div>
+      <h2>Bruna Pinheiro</h2>
+      <p class="nivel">Nível 7 🎯</p>
+
+      <div class="progresso-container">
+        <p>Progresso na plataforma</p>
+        <div class="barra">
+          <div class="barra-preenchida" style="width: 65%;"></div>
+        </div>
+        <span>65% Concluído</span>
+      </div>
+
+      <!-- Upload de Currículo (Apenas visual) -->
+      <div class="upload-cv">
+        <input type="file" id="cvUpload" disabled>
+        <p class="cv-info">*Em breve disponível*</p>
+        <label for="cvUpload" class="cv-label">Enviar Currículo</label>
+      </div>
+    </section>
+
+    <!-- CURSOS RECOMENDADOS -->
+    <section class="cursos-section">
+      <h2>Cursos Recomendados</h2>
+
+      <div class="cursos-grid">
+
+        <a href="https://youtu.be/PKwu15ldZ7k" target="_blank" class="curso-card">
+          <h3>HTML + CSS Iniciante</h3>
+          <p>Aula completa para iniciantes</p>
+        </a>
+
+        <a href="https://youtu.be/3PHXvlpOkf4" target="_blank" class="curso-card">
+          <h3>JavaScript para Iniciantes</h3>
+          <p>Conceitos base essenciais</p>
+        </a>
+
+        <a href="https://youtu.be/j942wKiXFu8" target="_blank" class="curso-card">
+          <h3>React do Zero</h3>
+          <p>React moderno explicado</p>
+        </a>
+
+        <a href="https://youtu.be/7L1g7l0Hw-Q" target="_blank" class="curso-card">
+          <h3>Git e GitHub</h3>
+          <p>Fundamentos para versionamento</p>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Teia - Todos os direitos reservados.</p>
+  </footer>
+
+</body>
+</html>
