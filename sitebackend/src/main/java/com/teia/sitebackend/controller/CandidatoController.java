@@ -1,10 +1,14 @@
 package com.teia.sitebackend.controller;
 
 import com.teia.sitebackend.dto.ApiResponse;
+import com.teia.sitebackend.dto.CandidatoCadastroRequest;
+import com.teia.sitebackend.dto.CandidatoDTO;
 import com.teia.sitebackend.dto.LoginRequest;
+import com.teia.sitebackend.factory.ResponseFactory;
+import com.teia.sitebackend.mapper.CandidatoMapper;
 import com.teia.sitebackend.model.Candidato;
-import com.teia.sitebackend.service.CandidatoService;
-import org.springframework.http.HttpStatus;
+import com.teia.sitebackend.service.ICandidatoService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,68 +19,55 @@ import java.util.Optional;
 @RequestMapping("/candidato")
 public class CandidatoController {
 
-    //Injeção de dependência
-    private final CandidatoService candidatoService;
+    private final ICandidatoService candidatoService;
+    private final CandidatoMapper candidatoMapper;
 
-    public CandidatoController(CandidatoService candidatoService) {
+    public CandidatoController(ICandidatoService candidatoService, CandidatoMapper candidatoMapper) {
         this.candidatoService = candidatoService;
+        this.candidatoMapper = candidatoMapper;
     }
 
+    /**
+     * Lista todos os candidatos (sem expor senhas)
+     */
     @GetMapping
-    public List<Candidato> getAll(){
-        return candidatoService.getAll();
+    public ResponseEntity<ApiResponse> getAll(){
+        List<Candidato> candidatos = candidatoService.getAll();
+        List<CandidatoDTO> candidatosDTO = candidatoMapper.toDTOList(candidatos);
+        return ResponseFactory.success("Candidatos listados com sucesso", candidatosDTO);
     }
 
+    /**
+     * Cadastra um novo candidato
+     */
     @PostMapping
-    public ResponseEntity<ApiResponse> create(@RequestBody Candidato candidato){
-        try {
-            // Validar se email já existe
-            if(candidatoService.emailJaExiste(candidato.getEmail())){
-                return ResponseEntity.badRequest()
-                    .body(new ApiResponse(false, "Este email já está cadastrado"));
-            }
-            
-            // Validar se CPF já existe
-            if(candidatoService.cpfJaExiste(candidato.getCpf())){
-                return ResponseEntity.badRequest()
-                    .body(new ApiResponse(false, "Este CPF já está cadastrado"));
-            }
-            
-            Candidato savedCandidato = candidatoService.save(candidato);
-            return ResponseEntity.ok(
-                new ApiResponse(true, "Cadastro realizado com sucesso!", savedCandidato)
-            );
-            
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiResponse(false, "Erro interno do servidor"));
-        }
+    public ResponseEntity<ApiResponse> create(@Valid @RequestBody CandidatoCadastroRequest request){
+        // Converte DTO para Entity
+        Candidato candidato = candidatoMapper.toEntity(request);
+        
+        // Salva (validações são feitas no service)
+        Candidato savedCandidato = candidatoService.save(candidato);
+        
+        // Converte para DTO (sem senha)
+        CandidatoDTO candidatoDTO = candidatoMapper.toDTO(savedCandidato);
+        
+        return ResponseFactory.created("Cadastro realizado com sucesso!", candidatoDTO);
     }
     
+    /**
+     * Realiza login do candidato
+     */
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest loginRequest){
-        try {
-            Optional<Candidato> candidato = candidatoService.validarLogin(
-                loginRequest.getEmail(), 
-                loginRequest.getSenha()
-            );
-            
-            if(candidato.isPresent()){
-                // Remove a senha da resposta por segurança
-                Candidato candidatoResponse = candidato.get();
-                candidatoResponse.setSenha(null);
-                
-                return ResponseEntity.ok(
-                    new ApiResponse(true, "Login realizado com sucesso!", candidatoResponse)
-                );
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ApiResponse(false, "Email ou senha incorretos"));
-            }
-            
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiResponse(false, "Erro interno do servidor"));
-        }
+    public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest loginRequest){
+        // Valida login (lança UnauthorizedException se inválido)
+        Optional<Candidato> candidato = candidatoService.validarLogin(
+            loginRequest.getEmail(), 
+            loginRequest.getSenha()
+        );
+        
+        // Converte para DTO (sem senha)
+        CandidatoDTO candidatoDTO = candidatoMapper.toDTO(candidato.get());
+        
+        return ResponseFactory.success("Login realizado com sucesso!", candidatoDTO);
     }
 }

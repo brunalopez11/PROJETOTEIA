@@ -5,7 +5,7 @@ import { CadastroPage } from './pages/Cadastro'
 import { DashboardPage } from './pages/Dashboard'
 import { SobrePage } from './pages/Sobre'
 import { ContatoPage } from './pages/Contato'
-import { AreaAlunoPage } from './pages/AreaAlunoPage'
+import { AreaAlunoPage } from './pages/AreaAluno'
 import './App.css'
 
 // Componente para proteger rotas que precisam de autenticação
@@ -32,14 +32,28 @@ const PublicRoute = ({ children }) => {
   return !isAuthenticated() ? children : <Navigate to="/" replace />;
 };
 
+// Componente para rota raiz - redireciona baseado na autenticação
+const RootRoute = () => {
+  const { isAuthenticated, loading } = useAuth();
+  
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+  
+  return isAuthenticated() ? <Navigate to="/dashboard" replace /> : <Navigate to="/sobre" replace />;
+};
+
 function AppRoutes() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          {/* Rota raiz - redireciona baseado na autenticação */}
+          <Route path="/" element={<RootRoute />} />
+          
           {/* Rota protegida - Dashboard */}
           <Route 
-            path="/" 
+            path="/dashboard" 
             element={
               <ProtectedRoute>
                 <DashboardPage />

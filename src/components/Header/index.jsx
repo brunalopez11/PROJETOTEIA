@@ -28,7 +28,6 @@ export const Header = () => {
     <nav>
       <ul>
         {/*Link to= não baixa HTML de novo, só atualiza o que mudou*/}
-        <li><Link to="/" className={isActive('/')}>Início</Link></li>
         {isAuthenticated() ? (
           <>
             <li><Link to="/sobre" className={isActive('/sobre')}>Sobre</Link></li>

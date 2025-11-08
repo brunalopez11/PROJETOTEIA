@@ -1,5 +1,8 @@
 package com.teia.sitebackend.service;
 
+import com.teia.sitebackend.exception.DuplicateResourceException;
+import com.teia.sitebackend.exception.ResourceNotFoundException;
+import com.teia.sitebackend.exception.UnauthorizedException;
 import com.teia.sitebackend.model.Candidato;
 import com.teia.sitebackend.repository.CandidatoRepository;
 import org.springframework.stereotype.Service;
@@ -8,53 +11,72 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CandidatoService {
+public class CandidatoService implements ICandidatoService {
     private final CandidatoRepository candidatoRepository;
 
     public CandidatoService(CandidatoRepository candidatoRepository) { 
         this.candidatoRepository = candidatoRepository;
     }
 
-    //LISTAR
+    @Override
     public List<Candidato> getAll(){
         return candidatoRepository.findAll();
     }
     
-    //OBTER POR ID
+    @Override
     public Optional<Candidato> getById(Integer id){
         return candidatoRepository.findById(String.valueOf(id));
     }
     
-    //CADASTRAR
+    @Override
     public Candidato save(Candidato candidato){
+        // Validar duplicação de email
+        if (candidato.getCandidato_id() == null && emailJaExiste(candidato.getEmail())) {
+            throw new DuplicateResourceException("Este email já está cadastrado");
+        }
+        
+        // Validar duplicação de CPF
+        if (candidato.getCandidato_id() == null && cpfJaExiste(candidato.getCpf())) {
+            throw new DuplicateResourceException("Este CPF já está cadastrado");
+        }
+        
         return candidatoRepository.save(candidato);
     }
     
-    //DELETAR
+    @Override
     public void delete(Integer id){
+        if (!candidatoRepository.existsById(String.valueOf(id))) {
+            throw new ResourceNotFoundException("Candidato não encontrado");
+        }
         candidatoRepository.deleteById(String.valueOf(id));
     }
     
-    //BUSCAR POR EMAIL
+    @Override
     public Optional<Candidato> findByEmail(String email){
         return candidatoRepository.findByEmail(email);
     }
     
-    //VALIDAR LOGIN
+    @Override
     public Optional<Candidato> validarLogin(String email, String senha){
         Optional<Candidato> candidato = candidatoRepository.findByEmail(email);
-        if(candidato.isPresent() && candidato.get().getSenha().equals(senha)){
-            return candidato;
+        
+        if (candidato.isEmpty()) {
+            throw new UnauthorizedException("Email ou senha incorretos");
         }
-        return Optional.empty();
+        
+        if (!candidato.get().getSenha().equals(senha)) {
+            throw new UnauthorizedException("Email ou senha incorretos");
+        }
+        
+        return candidato;
     }
     
-    //VERIFICAR SE EMAIL JÁ EXISTE
+    @Override
     public boolean emailJaExiste(String email){
         return candidatoRepository.existsByEmail(email);
     }
     
-    //VERIFICAR SE CPF JÁ EXISTE  
+    @Override
     public boolean cpfJaExiste(String cpf){
         return candidatoRepository.existsByCpf(cpf);
     }
